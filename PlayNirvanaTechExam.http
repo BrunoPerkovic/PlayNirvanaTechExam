@@ -1,0 +1,6 @@
+@PlayNirvanaTechExam_HostAddress = http://localhost:5099
+
+GET {{PlayNirvanaTechExam_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
