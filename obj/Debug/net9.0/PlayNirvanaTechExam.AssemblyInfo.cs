@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlayNirvanaTechExam")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ebadcdb21d08d6e0ac918f77874d39a96d3d8c3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88dde517b4c51a65a43883f3853834553a29f0fe")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlayNirvanaTechExam")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlayNirvanaTechExam")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

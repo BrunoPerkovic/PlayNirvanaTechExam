@@ -155,6 +155,211 @@ namespace PlayNirvanaTechExam.Migrations
                     b.ToTable("AspNetUserTokens", "identity");
                 });
 
+            modelBuilder.Entity("PlayNirvanaTechExam.Entities.BaseLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Radius")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations", "identity");
+                });
+
+            modelBuilder.Entity("PlayNirvanaTechExam.Entities.Place", b =>
+                {
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PlaceId"));
+
+                    b.Property<string>("AdministrativeArea")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdrFormatAddress")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("AllowsDogs")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("BusinessStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CompoundCode")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("CurbsidePickup")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("Delivery")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("DineIn")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FormattedAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GlobalCode")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("GoodForChildren")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("GoodForGroups")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("GoodForWatchingSports")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("GoogleMapsUri")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IconBackgroundColor")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IconMaskBaseUri")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InternationalPhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("LiveMusic")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Locality")
+                        .HasColumnType("text");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("MenuForChildren")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NationalPhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("OutdoorSeating")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PriceLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PrimaryType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PrimaryTypeDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("PureServiceAreaBusiness")
+                        .HasColumnType("boolean");
+
+                    b.Property<double?>("Rating")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("Reservable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("Restroom")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("Revision")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("ServesBeer")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesBreakfast")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesBrunch")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesCocktails")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesCoffee")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesDessert")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesDinner")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesLunch")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesVegetarianFood")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("ServesWine")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ShortFormattedAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SortingCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sublocality")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("Takeout")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("UserRatingCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UtcOffsetMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WebsiteUri")
+                        .HasColumnType("text");
+
+                    b.HasKey("PlaceId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Places", "identity");
+                });
+
             modelBuilder.Entity("PlayNirvanaTechExam.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -284,6 +489,22 @@ namespace PlayNirvanaTechExam.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayNirvanaTechExam.Entities.Place", b =>
+                {
+                    b.HasOne("PlayNirvanaTechExam.Entities.BaseLocation", "BaseLocation")
+                        .WithMany("Places")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseLocation");
+                });
+
+            modelBuilder.Entity("PlayNirvanaTechExam.Entities.BaseLocation", b =>
+                {
+                    b.Navigation("Places");
                 });
 #pragma warning restore 612, 618
         }

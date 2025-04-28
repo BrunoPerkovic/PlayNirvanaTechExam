@@ -2,7 +2,7 @@
 
 namespace PlayNirvanaTechExam.Interfaces.Repositories;
 
-public interface IPlaceRepository
+public interface ILocationRepository
 {
-    void CreatePlacesBulk(IEnumerable<Place> places);
+    void CreateLocation(BaseLocation location);
 }

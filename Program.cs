@@ -21,6 +21,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureSwagger();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

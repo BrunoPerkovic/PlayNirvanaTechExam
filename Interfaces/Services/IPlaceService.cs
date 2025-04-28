@@ -1,10 +1,11 @@
 ﻿using PlayNirvanaTechExam.Dtos;
+using PlayNirvanaTechExam.Dtos.Place;
 using PlayNirvanaTechExam.Entities;
 
 namespace PlayNirvanaTechExam.Interfaces.Services;
 
 public interface IPlaceService
 {
-    Task<Place> GetPlaceAsync(BaseRequest placeName);
-    Task<BaseEntity> CreatePlaceAsync(BaseRequest place);
+    Task<List<PlaceDto>> GetPlacesAsync(BaseRequest baseRequest);
+    Task<List<Place>> CreatePlacesAsync(BaseRequest baseRequest, int baseLocationId);
 }

@@ -9,4 +9,9 @@ public class PlaceRepository : RepositoryBase<Place>, IPlaceRepository
         : base(repositoryContext)
     {
     }
+
+    public void CreatePlacesBulk(IEnumerable<Place> places)
+    {
+        BulkCreate(places);
+    }
 }

@@ -39,6 +39,14 @@ public class RepositoryContext : IdentityDbContext<User, IdentityRole, string>
                 .HasConversion(v => v,
                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         });
+        
+
+        builder.Entity<Place>()
+            .HasOne(p => p.BaseLocation)
+            .WithMany(b => b.Places)
+            .HasForeignKey(p => p.LocationId)
+            .OnDelete(DeleteBehavior.Cascade); 
+        
         builder.HasDefaultSchema("identity");
     }
 }
