@@ -25,7 +25,6 @@ public class RepositoryManager : IRepositoryManager
     }
 
     public DbContext RepositoryContext { get; }
-    public DbSet<Place> Places => _repositoryContext.Set<Place>();
-    public DbSet<BaseLocation> Locations => _repositoryContext.Set<BaseLocation>();
+
     
 }

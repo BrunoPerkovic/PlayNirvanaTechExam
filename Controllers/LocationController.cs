@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PlayNirvanaTechExam.Dtos;
 using PlayNirvanaTechExam.Interfaces.Services;
 
@@ -17,6 +18,7 @@ public class LocationController : ControllerBase
 
     [HttpPost]
     [Route("CreateLocationAndPlacesFromGoogle")]
+    [Authorize]
     public async Task<IActionResult> CreateLocation([FromBody] BaseRequest baseRequest)
     {
         if (baseRequest == null)

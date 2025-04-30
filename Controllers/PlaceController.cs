@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PlayNirvanaTechExam.Dtos;
 using PlayNirvanaTechExam.Interfaces.Services;
+using PlayNirvanaTechExam.RequestFeatures;
 
 namespace PlayNirvanaTechExam.Controllers;
 
@@ -14,46 +16,42 @@ public class PlaceController : ControllerBase
     {
         _serviceManager = serviceManager;
     }
-    
-    /*[HttpPost]
-    public async Task<IActionResult> CreatePlace([FromBody] BaseRequest baseRequest)
-    {
-        if (baseRequest == null)
-        {
-            return BadRequest("Place cannot be null");
-        }
 
-        if (baseRequest.LocationRestriction.Circle.Center.Longitude is < -180 or > 180)
-        {
-            return BadRequest("Longitude must be between -180 and 180");
-        }
-
-        if (baseRequest.LocationRestriction.Circle.Center.Latitude is < -90 or > 90)
-        {
-            return BadRequest("Latitude must be between -90 and 90");
-        }
-
-        if (baseRequest.LocationRestriction.Circle.Radius is <= 0 or > 50000.0) 
-        {
-            return BadRequest("Radius must be between 0 and 50000");
-        }
-
-       // var createdPlace = await _serviceManager.PlaceService.CreatePlaceAsync(baseRequest);
-
-        return Ok(baseRequest);
-    }*/
-    
     [HttpGet]
-    public async Task<IActionResult> GetPlaces([FromQuery] BaseRequest baseRequest)
+    [Authorize]
+    public async Task<IActionResult> GetAllPlaces([FromQuery] RequestParameters requestParameters)
     {
-        if (baseRequest == null)
-        {
-            return BadRequest("Base request cannot be null");
-        }
+        var result = await _serviceManager.PlaceService.GetAllPlaces(requestParameters);
 
-        var places = await _serviceManager.PlaceService.GetPlacesAsync(baseRequest);
-
-        return Ok(places);
+        return Ok(result);
     }
-    
+
+    [HttpGet("location/{baseLocationId:int}")]
+    [Authorize]
+    public async Task<IActionResult> GetPlacesByLocation([FromQuery] RequestParameters requestParameters,
+        int baseLocationId)
+    {
+        var result = await _serviceManager.PlaceService.GetPlacesByLocationAsync(requestParameters, baseLocationId);
+
+        return Ok(result);
+    }
+
+    [HttpGet("all")]
+    [Authorize]
+    public async Task<IActionResult> GetAllPlacesAsync([FromQuery] RequestParameters requestParameters)
+    {
+        var result = await _serviceManager.PlaceService.GetAllPlacesAsync(requestParameters);
+
+        return Ok(result);
+    }
+
+    [HttpGet("location/{baseLocationId:int}/all")]
+    [Authorize]
+    public async Task<IActionResult> GetAllPlacesByLocationAsync([FromQuery] RequestParameters requestParameters,
+        int baseLocationId)
+    {
+        var result = await _serviceManager.PlaceService.GetPlacesByLocationAsync(requestParameters, baseLocationId);
+
+        return Ok(result);
+    }
 }

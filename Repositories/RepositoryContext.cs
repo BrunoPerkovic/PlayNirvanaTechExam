@@ -49,4 +49,7 @@ public class RepositoryContext : IdentityDbContext<User, IdentityRole, string>
         
         builder.HasDefaultSchema("identity");
     }
+    
+    public DbSet<Place> Places { get; set; }
+    public DbSet<BaseLocation> Locations { get; set; }
 }

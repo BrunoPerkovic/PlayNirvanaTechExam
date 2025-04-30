@@ -254,7 +254,6 @@ public class AddressDescriptor
 {
     public List<Landmark> Landmarks { get; set; }
     public List<Area> Areas { get; set; }
-
 }
 
 public class Landmark
@@ -267,7 +266,6 @@ public class Landmark
     public double StraightLineDistanceMeters { get; set; }
     public double TravelDistanceMeters { get; set; }
 }
-
 
 public class Area
 {
