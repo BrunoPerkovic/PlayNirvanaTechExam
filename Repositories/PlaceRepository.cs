@@ -14,9 +14,10 @@ public class PlaceRepository : RepositoryBase<Place>, IPlaceRepository
     {
     }
 
-    public async Task<List<Place>> GetAllPlaces(RequestParameters requestParameters)
+    public async Task<List<Place>> GetAllPlaces(RequestParameters requestParameters, IQueryCollection queryParams)
     {
         var places = await FindAll(false)
+            .FilterByProperties(queryParams)
             .Search(requestParameters.SearchTerm)
             .Include(p => p.BaseLocation)
             .ToListAsync();
@@ -24,9 +25,10 @@ public class PlaceRepository : RepositoryBase<Place>, IPlaceRepository
         return places;
     }
 
-    public async Task<List<Place>> GetAllPlacesByLocation(int locationId, RequestParameters requestParameters)
+    public async Task<List<Place>> GetAllPlacesByLocation(int locationId, RequestParameters requestParameters, IQueryCollection queryParams)
     {
         var places = await FindByCondition(p => p.LocationId == locationId, false)
+            .FilterByProperties(queryParams)
             .Search(requestParameters.SearchTerm)
             .Include(p => p.BaseLocation)
             .ToListAsync();

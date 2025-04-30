@@ -21,7 +21,7 @@ public class PlaceController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetAllPlaces([FromQuery] RequestParameters requestParameters)
     {
-        var result = await _serviceManager.PlaceService.GetAllPlaces(requestParameters);
+        var result = await _serviceManager.PlaceService.GetAllPlaces(requestParameters, Request.Query);
 
         return Ok(result);
     }
@@ -31,7 +31,7 @@ public class PlaceController : ControllerBase
     public async Task<IActionResult> GetPlacesByLocation([FromQuery] RequestParameters requestParameters,
         int baseLocationId)
     {
-        var result = await _serviceManager.PlaceService.GetPlacesByLocationAsync(requestParameters, baseLocationId);
+        var result = await _serviceManager.PlaceService.GetAllPlacesByLocation(requestParameters, baseLocationId, Request.Query);
 
         return Ok(result);
     }

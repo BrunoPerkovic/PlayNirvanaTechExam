@@ -1,72 +1,71 @@
-﻿using PlayNirvanaTechExam.Entities;
+﻿using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore;
+using PlayNirvanaTechExam.Entities;
 using PlayNirvanaTechExam.RequestFeatures;
 
 namespace PlayNirvanaTechExam.Repositories.Extensions;
 
 public static class PlaceRepositoryExtension
 {
-    public static IQueryable<Place> Search(this IQueryable<Place> places, string searchTerm)
-{
-    if (string.IsNullOrWhiteSpace(searchTerm))
+    public static IQueryable<Place> FilterByProperties(this IQueryable<Place> places, IQueryCollection queryParams)
     {
-        return places;
-    }
+        var propertyInfos = typeof(Place).GetProperties();
+        var query = places;
 
-    // Parse the search term if it contains field specification
-    string fieldToSearch = string.Empty;
-    string valueToSearch = searchTerm;
-
-    if (searchTerm.Contains("="))
-    {
-        var parts = searchTerm.Split('=');
-        if (parts.Length == 2)
+        foreach (var param in queryParams)
         {
-            fieldToSearch = parts[0].Trim().ToLower();
-            valueToSearch = parts[1].Trim().ToLower();
+            var property = propertyInfos.FirstOrDefault(p =>
+                p.Name.Equals(param.Key, StringComparison.OrdinalIgnoreCase));
+
+            if (property == null) continue;
+
+            var value = param.Value.ToString();
+            if (string.IsNullOrEmpty(value)) continue;
+
+            switch (Type.GetTypeCode(Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType))
+            {
+                case TypeCode.Boolean:
+                    if (bool.TryParse(value, out bool boolValue))
+                        query = query.Where($"{property.Name} == @0", boolValue);
+                    break;
+
+                case TypeCode.Int32:
+                    if (int.TryParse(value, out int intValue))
+                        query = query.Where($"{property.Name} == @0", intValue);
+                    break;
+
+                case TypeCode.Double:
+                    if (double.TryParse(value, out double doubleValue))
+                        query = query.Where($"{property.Name} == @0", doubleValue);
+                    break;
+
+                case TypeCode.String:
+                    query = query.Where($"{property.Name}.ToLower().Contains(@0)", value.ToLower());
+                    break;
+
+                default:
+                    if (property.PropertyType.IsEnum)
+                    {
+                        if (Enum.TryParse(property.PropertyType, value, true, out object enumValue))
+                            query = query.Where($"{property.Name} == @0", enumValue);
+                    }
+                    break;
+            }
         }
-    }
 
-    // If specific field is provided, search only that field
-    if (!string.IsNullOrEmpty(fieldToSearch))
+        return query;
+    }
+    public static IQueryable<Place> Search(this IQueryable<Place> places, string? searchTerm)
     {
-        return fieldToSearch switch
-        {
-            "regioncode" => places.Where(p => p.RegionCode.ToLower().Contains(valueToSearch)),
-            "name" => places.Where(p => p.Name.ToLower().Contains(valueToSearch)),
-            "primarytype" => places.Where(p => p.PrimaryType.ToLower().Contains(valueToSearch)),
-            "locality" => places.Where(p => p.Locality.ToLower().Contains(valueToSearch)),
-            _ => places.Where(p =>
-                p.Name.ToLower().Contains(valueToSearch) ||
-                p.DisplayName.ToLower().Contains(valueToSearch) ||
-                p.PrimaryType.ToLower().Contains(valueToSearch) ||
-                p.PrimaryTypeDisplayName.ToLower().Contains(valueToSearch) ||
-                p.FormattedAddress.ToLower().Contains(valueToSearch) ||
-                p.ShortFormattedAddress.ToLower().Contains(valueToSearch) ||
-                p.RegionCode.ToLower().Contains(valueToSearch) ||
-                p.LanguageCode.ToLower().Contains(valueToSearch) ||
-                p.PostalCode.ToLower().Contains(valueToSearch) ||
-                p.SortingCode.ToLower().Contains(valueToSearch) ||
-                p.AdministrativeArea.ToLower().Contains(valueToSearch) ||
-                p.Locality.ToLower().Contains(valueToSearch) ||
-                p.Sublocality.ToLower().Contains(valueToSearch))
-        };
-    }
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            return places;
 
-    // If no specific field, search all fields
-    return places.Where(p =>
-        p.Name.ToLower().Contains(valueToSearch) ||
-        p.DisplayName.ToLower().Contains(valueToSearch) ||
-        p.PrimaryType.ToLower().Contains(valueToSearch) ||
-        p.PrimaryTypeDisplayName.ToLower().Contains(valueToSearch) ||
-        p.FormattedAddress.ToLower().Contains(valueToSearch) ||
-        p.ShortFormattedAddress.ToLower().Contains(valueToSearch) ||
-        p.RegionCode.ToLower().Contains(valueToSearch) ||
-        p.LanguageCode.ToLower().Contains(valueToSearch) ||
-        p.PostalCode.ToLower().Contains(valueToSearch) ||
-        p.SortingCode.ToLower().Contains(valueToSearch) ||
-        p.AdministrativeArea.ToLower().Contains(valueToSearch) ||
-        p.Locality.ToLower().Contains(valueToSearch) ||
-        p.Sublocality.ToLower().Contains(valueToSearch)
-    );
-}
+        var lowerCaseTerm = searchTerm.Trim().ToLower();
+
+        return places.Where(p => 
+            (p.Name != null && p.Name.ToLower().Contains(lowerCaseTerm)) ||
+            (p.DisplayName != null && p.DisplayName.ToLower().Contains(lowerCaseTerm)) ||
+            (p.PrimaryType != null && p.PrimaryType.ToLower().Contains(lowerCaseTerm)) ||
+            (p.FormattedAddress != null && p.FormattedAddress.ToLower().Contains(lowerCaseTerm)));
+    }
 }

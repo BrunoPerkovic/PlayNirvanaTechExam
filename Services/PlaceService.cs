@@ -63,9 +63,9 @@ public class PlaceService : IPlaceService
         }
     }
 
-    public async Task<List<PlaceResponse>> GetAllPlaces(RequestParameters requestParameters)
+    public async Task<List<PlaceResponse>> GetAllPlaces(RequestParameters requestParameters, IQueryCollection queryParams)
     {
-        var places = await _repositoryManager.Place.GetAllPlaces(requestParameters);
+        var places = await _repositoryManager.Place.GetAllPlaces(requestParameters,queryParams);
 
         var placesResponse = new List<PlaceResponse>();
         foreach (var place in places)
@@ -79,9 +79,9 @@ public class PlaceService : IPlaceService
     }
 
     public async Task<List<PlaceResponse>> GetAllPlacesByLocation(RequestParameters requestParameters,
-        int baseLocationId)
+        int baseLocationId, IQueryCollection queryParams)
     {
-        var places = await _repositoryManager.Place.GetAllPlacesByLocationAsync(baseLocationId, requestParameters);
+        var places = await _repositoryManager.Place.GetAllPlacesByLocation(baseLocationId, requestParameters, queryParams);
 
         var placesResponse = new List<PlaceResponse>();
         foreach (var place in places)
