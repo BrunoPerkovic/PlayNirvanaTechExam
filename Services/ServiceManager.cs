@@ -14,6 +14,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IPlaceService> _placeService;
     private readonly Lazy<ILocationService> _locationService;
     private readonly Lazy<INotificationService> _notificationService;
+    private readonly Lazy<IRequestQueueService> _requestQueueService;
 
     public ServiceManager(IRepositoryManager repositoryManager,
         UserManager<User> userManager,
@@ -29,7 +30,7 @@ public class ServiceManager : IServiceManager
         {
             return new PlaceService(repositoryManager, httpClient, appSettings);
         });
-        
+
         _locationService = new Lazy<ILocationService>(() =>
         {
             return new LocationService(repositoryManager, _placeService.Value);
@@ -38,10 +39,13 @@ public class ServiceManager : IServiceManager
         {
             return new NotificationService(searchHubContext);
         });
+
+        _requestQueueService = new Lazy<IRequestQueueService>(() => { return new RequestQueueService(); });
     }
 
     public IAuthService AuthService => _authService.Value;
     public IPlaceService PlaceService => _placeService.Value;
     public ILocationService LocationService => _locationService.Value;
     public INotificationService NotificationService => _notificationService.Value;
+    public IRequestQueueService RequestQueueService => _requestQueueService.Value;
 }

@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayNirvanaTechExam.Dtos;
+using PlayNirvanaTechExam.Extensions;
 using PlayNirvanaTechExam.Interfaces.Services;
 
 namespace PlayNirvanaTechExam.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[QueueRequest]
 public class LocationController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -36,19 +38,18 @@ public class LocationController : ControllerBase
             return BadRequest("Latitude must be between -90 and 90");
         }
 
-        if (baseRequest.LocationRestriction.Circle.Radius is <= 0 or > 50000.0) 
+        if (baseRequest.LocationRestriction.Circle.Radius is <= 0 or > 50000.0)
         {
             return BadRequest("Radius must be between 0 and 50000");
         }
-        
+
         var result = await _serviceManager.LocationService.CreateLocationAsync(baseRequest);
-        await _serviceManager.NotificationService.NotifySearchPerformed(
-            nameof(LocationController).Replace("Controller", ""),
+        await _serviceManager.NotificationService.NotifySearchPerformed(nameof(LocationController)
+                .Replace("Controller", ""),
             nameof(CreateLocation),
             Request.QueryString.ToString(),
             Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
-            result
-        );
+            result);
         return Ok(result);
     }
 }

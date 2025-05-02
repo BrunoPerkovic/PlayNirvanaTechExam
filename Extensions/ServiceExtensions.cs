@@ -32,7 +32,7 @@ public static class ServiceExtensions
 
     public static void ConfigureIisIntegration(this IServiceCollection services) =>
         services.Configure<IISOptions>(options => { });
-    
+
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
 
@@ -60,7 +60,7 @@ public static class ServiceExtensions
                     Email = "brunko10@gmail.com",
                 },
             });
-    
+
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -129,5 +129,17 @@ public static class ServiceExtensions
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]))
                 };
             });
+    }
+
+    public static void ConfigureNotificationService(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddSignalR();
+        services.AddScoped<INotificationService, NotificationService>();
+    }
+
+    public static void ConfigureQueue(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingleton<IRequestQueueService, RequestQueueService>();
     }
 }

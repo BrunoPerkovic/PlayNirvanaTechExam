@@ -6,4 +6,5 @@ public interface IServiceManager
     ILocationService LocationService { get; }
     IAuthService AuthService { get; }
     INotificationService NotificationService { get; }
+    IRequestQueueService RequestQueueService { get; }
 }

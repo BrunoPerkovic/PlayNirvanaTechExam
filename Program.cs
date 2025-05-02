@@ -25,8 +25,8 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient();
-builder.Services.AddSignalR();
-builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.ConfigureQueue(builder.Configuration);
+builder.Services.ConfigureNotificationService(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
