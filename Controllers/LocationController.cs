@@ -9,11 +9,11 @@ namespace PlayNirvanaTechExam.Controllers;
 [Route("api/[controller]")]
 public class LocationController : ControllerBase
 {
-    private readonly IServiceManager _service;
+    private readonly IServiceManager _serviceManager;
 
     public LocationController(IServiceManager service)
     {
-        _service = service;
+        _serviceManager = service;
     }
 
     [HttpPost]
@@ -41,7 +41,14 @@ public class LocationController : ControllerBase
             return BadRequest("Radius must be between 0 and 50000");
         }
         
-        var result = await _service.LocationService.CreateLocationAsync(baseRequest);
+        var result = await _serviceManager.LocationService.CreateLocationAsync(baseRequest);
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(LocationController).Replace("Controller", ""),
+            nameof(CreateLocation),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
         return Ok(result);
     }
 }

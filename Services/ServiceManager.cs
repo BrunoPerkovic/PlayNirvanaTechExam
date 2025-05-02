@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using PlayNirvanaTechExam.Entities;
+using PlayNirvanaTechExam.Hub;
 using PlayNirvanaTechExam.Interfaces.Repositories;
 using PlayNirvanaTechExam.Interfaces.Services;
 
@@ -11,15 +13,15 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IAuthService> _authService;
     private readonly Lazy<IPlaceService> _placeService;
     private readonly Lazy<ILocationService> _locationService;
-
+    private readonly Lazy<INotificationService> _notificationService;
 
     public ServiceManager(IRepositoryManager repositoryManager,
         UserManager<User> userManager,
         IConfiguration appSettings,
         IServiceScopeFactory serviceScopeFactory,
         IHttpContextAccessor httpContextAccessor,
-        HttpClient httpClient
-    )
+        HttpClient httpClient,
+        IHubContext<SearchHub> searchHubContext)
     {
         _authService = new Lazy<IAuthService>(() =>
             new AuthService(userManager, appSettings, httpContextAccessor));
@@ -32,10 +34,14 @@ public class ServiceManager : IServiceManager
         {
             return new LocationService(repositoryManager, _placeService.Value);
         });
-    
+        _notificationService = new Lazy<INotificationService>(() =>
+        {
+            return new NotificationService(searchHubContext);
+        });
     }
 
     public IAuthService AuthService => _authService.Value;
     public IPlaceService PlaceService => _placeService.Value;
     public ILocationService LocationService => _locationService.Value;
+    public INotificationService NotificationService => _notificationService.Value;
 }

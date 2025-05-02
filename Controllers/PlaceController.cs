@@ -11,10 +11,16 @@ namespace PlayNirvanaTechExam.Controllers;
 public class PlaceController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
+    /*
+    private readonly INotificationService _notificationService;
+    */
 
-    public PlaceController(IServiceManager serviceManager)
+    public PlaceController(IServiceManager serviceManager, INotificationService notificationService)
     {
         _serviceManager = serviceManager;
+        /*
+        _notificationService = notificationService;
+    */
     }
 
     [HttpGet]
@@ -22,7 +28,13 @@ public class PlaceController : ControllerBase
     public async Task<IActionResult> GetAllPlaces([FromQuery] RequestParameters requestParameters)
     {
         var result = await _serviceManager.PlaceService.GetAllPlaces(requestParameters, Request.Query);
-
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(PlaceController).Replace("Controller", ""),
+            nameof(GetAllPlaces),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
         return Ok(result);
     }
 
@@ -32,7 +44,13 @@ public class PlaceController : ControllerBase
         int baseLocationId)
     {
         var result = await _serviceManager.PlaceService.GetAllPlacesByLocation(requestParameters, baseLocationId, Request.Query);
-
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(PlaceController).Replace("Controller", ""),
+            nameof(GetPlacesByLocation),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
         return Ok(result);
     }
 
@@ -41,7 +59,13 @@ public class PlaceController : ControllerBase
     public async Task<IActionResult> GetAllPlacesAsync([FromQuery] RequestParameters requestParameters)
     {
         var result = await _serviceManager.PlaceService.GetAllPlacesAsync(requestParameters);
-
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(PlaceController).Replace("Controller", ""),
+            nameof(GetAllPlacesAsync),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
         return Ok(result);
     }
 
@@ -51,7 +75,13 @@ public class PlaceController : ControllerBase
         int baseLocationId)
     {
         var result = await _serviceManager.PlaceService.GetPlacesByLocationAsync(requestParameters, baseLocationId);
-
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(PlaceController).Replace("Controller", ""),
+            nameof(GetAllPlacesByLocationAsync),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
         return Ok(result);
     }
 }

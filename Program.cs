@@ -3,7 +3,10 @@ using Microsoft.OpenApi.Models;
 using PlayNirvanaTechExam.Database;
 using PlayNirvanaTechExam.Entities;
 using PlayNirvanaTechExam.Extensions;
+using PlayNirvanaTechExam.Hub;
+using PlayNirvanaTechExam.Interfaces.Services;
 using PlayNirvanaTechExam.Repositories;
+using PlayNirvanaTechExam.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,8 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +39,7 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapHub<SearchHub>("/searchHub");
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())

@@ -23,9 +23,15 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        var tokenDto = await _serviceManager.AuthService.CreateToken(true);
-
-        return Ok(tokenDto);
+        var result = await _serviceManager.AuthService.CreateToken(true);
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(AuthController).Replace("Controller", ""),
+            nameof(LoginUser),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
+        return Ok(result);
     }
 
     [HttpPost("register")]
@@ -40,6 +46,14 @@ public class AuthController : ControllerBase
             ModelState.TryAddModelError(error.Code, error.Description);
         }
 
+        await _serviceManager.NotificationService.NotifySearchPerformed(
+            nameof(AuthController).Replace("Controller", ""),
+            nameof(LoginUser),
+            Request.QueryString.ToString(),
+            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+            result
+        );
+        
         return StatusCode(400, ModelState);
 
     }
