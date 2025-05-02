@@ -13,7 +13,6 @@ public class PlaceController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
 
-
     public PlaceController(IServiceManager serviceManager)
     {
         _serviceManager = serviceManager;
@@ -43,35 +42,6 @@ public class PlaceController : ControllerBase
         await _serviceManager.NotificationService.NotifySearchPerformed(nameof(PlaceController)
                 .Replace("Controller", ""),
             nameof(GetPlacesByLocation),
-            Request.QueryString.ToString(),
-            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
-            result);
-        return Ok(result);
-    }
-
-    [HttpGet("all")]
-    [Authorize]
-    public async Task<IActionResult> GetAllPlacesAsync([FromQuery] RequestParameters requestParameters)
-    {
-        var result = await _serviceManager.PlaceService.GetAllPlacesAsync(requestParameters);
-        await _serviceManager.NotificationService.NotifySearchPerformed(nameof(PlaceController)
-                .Replace("Controller", ""),
-            nameof(GetAllPlacesAsync),
-            Request.QueryString.ToString(),
-            Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
-            result);
-        return Ok(result);
-    }
-
-    [HttpGet("location/{baseLocationId:int}/all")]
-    [Authorize]
-    public async Task<IActionResult> GetAllPlacesByLocationAsync([FromQuery] RequestParameters requestParameters,
-        int baseLocationId)
-    {
-        var result = await _serviceManager.PlaceService.GetPlacesByLocationAsync(requestParameters, baseLocationId);
-        await _serviceManager.NotificationService.NotifySearchPerformed(nameof(PlaceController)
-                .Replace("Controller", ""),
-            nameof(GetAllPlacesByLocationAsync),
             Request.QueryString.ToString(),
             Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
             result);

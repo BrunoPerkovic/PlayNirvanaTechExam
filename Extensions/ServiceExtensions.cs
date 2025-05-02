@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -20,13 +19,13 @@ public static class ServiceExtensions
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", builder =>
-                builder.WithOrigins() // Only specify valid origins
+                builder.WithOrigins() 
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials() // Allow credentials (cookies, etc.)
-                    .WithExposedHeaders("X-Pagination") // Expose specific headers
+                    .AllowCredentials() 
+                    .WithExposedHeaders("X-Pagination") 
                     .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .SetIsOriginAllowed((hosts) => true)); // Optional: Allow any specific host logic (if needed)
+                    .SetIsOriginAllowed((hosts) => true));
         });
 
 
@@ -106,11 +105,10 @@ public static class ServiceExtensions
     {
         services.AddAuthentication(options =>
             {
-                // Default authentication scheme set to JWT Bearer
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme =
-                    CookieAuthenticationDefaults.AuthenticationScheme; // For Google authentication flow
+                    CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(options =>
             {
@@ -123,8 +121,6 @@ public static class ServiceExtensions
                     RequireExpirationTime = true,
                     ValidIssuer = configuration["JwtSettings:ValidIssuer"],
                     ValidAudience = configuration["JwtSettings:ValidAudience"],
-                    /*ValidIssuer = jwtConfiguration.ValidIssuer,
-                    ValidAudience = jwtConfiguration.ValidAudience,*/
                     IssuerSigningKey =
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]))
                 };

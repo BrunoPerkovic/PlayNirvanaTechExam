@@ -94,35 +94,6 @@ public class PlaceService : IPlaceService
         return placesResponse;
     }
 
-    public async Task<PlaceDtoWithMetaData> GetAllPlacesAsync(RequestParameters requestParameters)
-    {
-        var places = await _repositoryManager.Place.GetAllPlacesAsync(requestParameters);
-
-        var placeResponses = new List<PlaceResponse>();
-        foreach (var place in places)
-        {
-            var placeResponse = place.ToResponse();
-            
-            placeResponses.Add(placeResponse);
-        }
-        return new PlaceDtoWithMetaData(placeResponses, places.MetaData);
-    }
-
-    public async Task<PlaceDtoWithMetaData> GetPlacesByLocationAsync(RequestParameters requestParameters,
-        int baseLocationId)
-    {
-        var places = await _repositoryManager.Place.GetAllPlacesByLocationAsync(baseLocationId, requestParameters);
-
-        var placeResponses = new List<PlaceResponse>();
-        foreach (var place in places)
-        {
-            var placeResponse = place.ToResponse();
-            
-            placeResponses.Add(placeResponse);
-        }
-        return new PlaceDtoWithMetaData(placeResponses, places.MetaData);
-    }
-
     public async Task<List<Place>> CreatePlacesAsync(BaseRequest baseRequest, int baseLocationId)
     {
         // Implement the logic to create a place

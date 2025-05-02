@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PlayNirvanaTechExam.Entities;
 using PlayNirvanaTechExam.Interfaces.Repositories;
 
 namespace PlayNirvanaTechExam.Repositories;

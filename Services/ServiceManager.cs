@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Options;
 using PlayNirvanaTechExam.Entities;
 using PlayNirvanaTechExam.Hub;
 using PlayNirvanaTechExam.Interfaces.Repositories;
@@ -19,7 +18,6 @@ public class ServiceManager : IServiceManager
     public ServiceManager(IRepositoryManager repositoryManager,
         UserManager<User> userManager,
         IConfiguration appSettings,
-        IServiceScopeFactory serviceScopeFactory,
         IHttpContextAccessor httpContextAccessor,
         HttpClient httpClient,
         IHubContext<SearchHub> searchHubContext)

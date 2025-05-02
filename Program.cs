@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.OpenApi.Models;
 using PlayNirvanaTechExam.Database;
 using PlayNirvanaTechExam.Entities;
 using PlayNirvanaTechExam.Extensions;
 using PlayNirvanaTechExam.Hub;
-using PlayNirvanaTechExam.Interfaces.Services;
 using PlayNirvanaTechExam.Repositories;
-using PlayNirvanaTechExam.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +49,5 @@ using (var scope = app.Services.CreateScope())
 
     await DbInitializer.Initialize(context, userManager, roleManager);
 }
-
 
 app.Run();

@@ -1,7 +1,5 @@
 ﻿using System.Linq.Dynamic.Core;
-using Microsoft.EntityFrameworkCore;
 using PlayNirvanaTechExam.Entities;
-using PlayNirvanaTechExam.RequestFeatures;
 
 namespace PlayNirvanaTechExam.Repositories.Extensions;
 

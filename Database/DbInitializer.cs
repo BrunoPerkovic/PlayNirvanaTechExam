@@ -12,10 +12,8 @@ public static class DbInitializer
     {
         context.Database.EnsureCreated();
 
-        // Check if roles already exist
         if (!context.Roles.Any())
         {
-            // Create roles
             await roleManager.CreateAsync(new IdentityRole("Admin"));
             await roleManager.CreateAsync(new IdentityRole("Employee"));
             await roleManager.CreateAsync(new IdentityRole("User"));
